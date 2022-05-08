@@ -21,12 +21,11 @@ body.innerHTML = `
     </div>
 `;
 
-document.addEventListener('keydown', (e) => {
-    console.log(e.code);
-});
-
 function init(arr) {
+    let currentLanguage = window.navigator.language;
+    console.log(currentLanguage);
     const keyboard_block = document.querySelector('.keyboard_block');
+
     const line_1 = keyboard_block.querySelector('.line_1');
     const line_2 = keyboard_block.querySelector('.line_2');
     const line_3 = keyboard_block.querySelector('.line_3');
@@ -36,10 +35,23 @@ function init(arr) {
         const key = document.createElement('div');
         key.classList.add(element.size);
         key.classList.add('key_btn');
-        console.log(element);
+        // console.log(element);
+        key.setAttribute('id', element.code);
         key.setAttribute('line', element.line);
-        key.innerHTML = element.code;
+        key.setAttribute('char-en', element.character.en);
+        key.setAttribute('char-ru', element.character.ru);
+        key.setAttribute('letter-en', element.contents.en);
+        key.setAttribute('letter-ru', element.contents.ru);
+        key.setAttribute('change-en', element.shift.en);
+        key.setAttribute('change-ru', element.shift.ru);
+        if (currentLanguage == 'en') {
+            key.innerHTML = element.contents.en;
+        } else {
+            key.innerHTML = element.contents.ru;
+        }
+
         const current_line = key.getAttribute('line');
+
         if (current_line === 'line_1') {
             line_1.append(key);
         }
@@ -55,11 +67,13 @@ function init(arr) {
         if (current_line === 'line_5') {
             line_5.append(key);
         }
-
-        // console.log(current_line.append(key));
-
-        // key.getAttribute('line').append(key);
-        // keyboard_block.append(key);
     });
 }
 init(keys);
+
+document.addEventListener('keydown', (e) => {
+    // const currentLetter = e.code;
+    const currentLetter = document.querySelector(`#${e.code}`);
+    currentLetter.classList.add('active');
+    console.log(currentLetter);
+});
