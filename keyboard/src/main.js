@@ -21,10 +21,14 @@ body.innerHTML = `
     </div>
 `;
 
-function init(arr) {
+function init(collection) {
+    const arr = [...collection];
     let currentLanguage = window.navigator.language;
     console.log(currentLanguage);
     const keyboard_block = document.querySelector('.keyboard_block');
+    const textarea = document.querySelector('.textarea');
+    textarea.onblur = () => textarea.focus();
+    textarea.focus();
 
     const line_1 = keyboard_block.querySelector('.line_1');
     const line_2 = keyboard_block.querySelector('.line_2');
@@ -35,7 +39,6 @@ function init(arr) {
         const key = document.createElement('div');
         key.classList.add(element.size);
         key.classList.add('key_btn');
-        // console.log(element);
         key.setAttribute('id', element.code);
         key.setAttribute('line', element.line);
         key.setAttribute('char-en', element.character.en);
@@ -49,9 +52,7 @@ function init(arr) {
         } else {
             key.innerHTML = element.contents.ru;
         }
-
         const current_line = key.getAttribute('line');
-
         if (current_line === 'line_1') {
             line_1.append(key);
         }
@@ -72,8 +73,10 @@ function init(arr) {
 init(keys);
 
 document.addEventListener('keydown', (e) => {
-    // const currentLetter = e.code;
     const currentLetter = document.querySelector(`#${e.code}`);
     currentLetter.classList.add('active');
-    console.log(currentLetter);
+});
+document.addEventListener('keyup', (e) => {
+    const currentLetter = document.querySelector(`#${e.code}`);
+    currentLetter.classList.remove('active');
 });
