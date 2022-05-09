@@ -62,7 +62,7 @@
     transition: 0.1s;
 }
 .key_btn.active {
-    background-color: aqua;
+    background-color: #6495ed63;
 }
 .key_btn_size_standart {
     width: 6%;
