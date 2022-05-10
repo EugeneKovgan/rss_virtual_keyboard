@@ -17,20 +17,19 @@ body.innerHTML = `
                 <div class="line_5"></div>
             </div>
         </div>
-        <div class="keyboard_footer">created in Windows OS (language chande - ShiftLeft + AltLeft )</div>
+        <div class="keyboard_footer">created in Windows OS (language change - ShiftLeft + AltLeft )</div>
     </div>
 `;
 
 if (localStorage.length === 0) {
     localStorage.setItem('lang', 'en');
 }
-let currentLanguage = localStorage.getItem('lang', 'en');
 let capsLockState = 'no_active';
 const arrayKeys = [...keys];
 console.log(`CapsLock - ${capsLockState}`);
 
 function init(arr) {
-    console.log(currentLanguage);
+    console.log(localStorage.getItem('lang'));
     const textarea = document.querySelector('.textarea');
     textarea.onblur = () => textarea.focus();
     textarea.focus();
@@ -46,16 +45,19 @@ function init(arr) {
         key.setAttribute('upper-en', element.upper.en);
         key.setAttribute('upper-ru', element.upper.ru);
         key.setAttribute('type_key', element.type.en);
-        drowKeys(currentLanguage, key, element);
+        drowKeys(localStorage.getItem('lang'), key, element);
     });
     showActiveKeys();
-    typingMouse(currentLanguage, capsLockState);
+    typingMouse(localStorage.getItem('lang'), capsLockState);
     changeLang(
         () => {
-            // alert('Привет!');
-            localStorage.getItem('lang') === 'en'
-                ? localStorage.setItem('lang', 'ru')
-                : console.log(localStorage.getItem('lang'));
+            if (localStorage.getItem('lang') === 'en') {
+                localStorage.setItem('lang', 'ru');
+                console.log(localStorage.getItem('lang'));
+            } else if (localStorage.getItem('lang') === 'ru') {
+                localStorage.setItem('lang', 'en');
+                console.log(localStorage.getItem('lang'));
+            }
         },
         'ShiftLeft',
         'AltLeft'
@@ -100,20 +102,18 @@ function drowKeys(lang, key, element) {
 }
 
 function redrowingKey(lang, size) {
-    console.log(currentLanguage);
-    console.log(`CapsLock - ${capsLockState}`);
     const keys = document.querySelectorAll('.key_btn');
     keys.forEach((el) => {
         el.innerHTML = el.getAttribute(`${size}-${lang}`);
     });
 }
 
-function typingMouse(lang, capsLockState) {
+function typingMouse(lang, caps) {
+    const textarea = document.querySelector('.textarea');
     document.addEventListener('click', (e) => {
-        console.log('click');
-        const textarea = document.querySelector('.textarea');
         let size;
-        if (capsLockState == 'active') {
+        console.log(caps);
+        if (caps == 'active') {
             size = 'upper';
         } else {
             size = 'lover';
@@ -123,7 +123,12 @@ function typingMouse(lang, capsLockState) {
             e.target.getAttribute('type_key') == 'letter' ||
             e.target.getAttribute('type_key') == 'digit'
         ) {
+            // console.log(capsLockState);
+
             textarea.innerHTML += e.target.getAttribute(`${size}-${lang}`);
+            // if (el.dataset.buttonType === "ArrowRight")
+            textarea.focus();
+            textarea.selectionStart = textarea.value.length;
         }
     });
 }
@@ -136,12 +141,16 @@ function showActiveKeys() {
         } else if (currentLetter.id == 'ShiftLeft' || currentLetter.id == 'ShiftRight') {
             currentLetter.classList.add('active');
             capsLockState = 'active';
-            redrowingKey(currentLanguage, 'upper');
+            redrowingKey(localStorage.getItem('lang'), 'upper');
         } else {
             currentLetter.classList.toggle('active');
             currentLetter.classList.contains('active')
-                ? ((capsLockState = 'active'), redrowingKey(currentLanguage, 'upper'))
-                : ((capsLockState = 'no_active'), redrowingKey(currentLanguage, 'lover'));
+                ? ((capsLockState = 'active'),
+                  redrowingKey(localStorage.getItem('lang'), 'upper'),
+                  console.log(capsLockState))
+                : ((capsLockState = 'no_active'),
+                  redrowingKey(localStorage.getItem('lang'), 'lover'),
+                  console.log(capsLockState));
         }
     });
     document.addEventListener('keyup', (e) => {
@@ -151,7 +160,7 @@ function showActiveKeys() {
         } else if (currentLetter.id == 'ShiftLeft' || currentLetter.id == 'ShiftRight') {
             currentLetter.classList.remove('active');
             capsLockState = 'no_active';
-            redrowingKey(currentLanguage, 'lover');
+            redrowingKey(localStorage.getItem('lang'), 'lover');
         }
     });
     document.addEventListener('mousedown', (e) => {
@@ -160,12 +169,12 @@ function showActiveKeys() {
         } else if (e.target.id == 'ShiftLeft' || e.target.id == 'ShiftRight') {
             e.target.classList.add('active');
             capsLockState = 'active';
-            redrowingKey(currentLanguage, 'upper');
+            redrowingKey(localStorage.getItem('lang'), 'upper');
         } else {
             e.target.classList.toggle('active');
             e.target.classList.contains('active')
-                ? ((capsLockState = 'active'), redrowingKey(currentLanguage, 'upper'))
-                : ((capsLockState = 'no_active'), redrowingKey(currentLanguage, 'lover'));
+                ? ((capsLockState = 'active'), redrowingKey(localStorage.getItem('lang'), 'upper'))
+                : ((capsLockState = 'no_active'), redrowingKey(localStorage.getItem('lang'), 'lover'));
         }
     });
     document.addEventListener('mouseup', (e) => {
@@ -174,8 +183,8 @@ function showActiveKeys() {
         } else if (e.target.id == 'ShiftLeft' || e.target.id == 'ShiftRight') {
             e.target.classList.remove('active');
             capsLockState = 'no_active';
-            redrowingKey(currentLanguage, 'lover');
-            typingMouse(currentLanguage, capsLockState);
+            redrowingKey(localStorage.getItem('lang'), 'lover');
+            typingMouse(localStorage.getItem('lang'), capsLockState);
         }
     });
 }
