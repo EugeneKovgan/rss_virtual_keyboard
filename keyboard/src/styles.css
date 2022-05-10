@@ -1,0 +1,82 @@
+.keyboard_wrapper {
+    background-color: #f9f3ea94;
+    width: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px cornflowerblue solid;
+    border-radius: 0.5rem;
+    margin: 0.5rem;
+}
+.keyboard_header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 8rem;
+}
+.keyboard_header .textarea {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    width: 100%;
+    padding: 1rem;
+    resize: none;
+    border-radius: 0.5rem;
+}
+.keyboard_main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+.keyboard_block {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+.line_1,
+.line_2,
+.line_3,
+.line_4,
+.line_5 {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+.key_btn {
+    height: 3rem;
+    border: 1px cornflowerblue solid;
+    border-radius: 0.5rem;
+    margin: 0.1%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.key_btn:hover {
+    cursor: pointer;
+    background-color: #6495ed30;
+    transition: 0.1s;
+}
+.key_btn.active {
+    background-color: #6495ed63;
+}
+.key_btn_size_standart {
+    width: 6%;
+}
+
+.key_btn_size_double {
+    width: 12.7%;
+}
+
+.key_btn_size_space {
+    width: 52.8%;
+}
+
+.keyboard_footer {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
